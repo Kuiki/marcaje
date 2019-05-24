@@ -26,3 +26,4 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/intranet', 'RegisterController@index');
 Route::post('/registros/nuevo', 'RegisterController@store')->name('registros.add');
 Route::put('/registros/editar/{register}', 'RegisterController@update')->name('registros.edit');
+Route::post('/documentos/nuevo', 'AttachmentController@store')->name('documento.add');
