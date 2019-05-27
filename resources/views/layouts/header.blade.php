@@ -181,7 +181,7 @@
                 <!-- The user image in the navbar-->
                 <img src="{{ asset('dist/img/user2-160x160.jpg') }}" class="user-image" alt="User Image">
                 <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                <span class="hidden-xs">Alexander Pierce</span>
+                <span class="hidden-xs">{{$user->name}} {{$user->surname}}</span>
               </a>
               <ul class="dropdown-menu">
                 <!-- The user image in the menu -->
@@ -189,29 +189,16 @@
                   <img src="{{ asset('dist/img/user2-160x160.jpg') }}" class="img-circle" alt="User Image">
 
                   <p>
-                    Alexander Pierce - Web Developer
-                    <small>Member since Nov. 2012</small>
+                    {{$user->name}} {{$user->surname}} - Web Developer
+                    <small>Miembro desde {{ date (" d - M - Y", strtotime($user->created_at)) }}</small>
                   </p>
                 </li>
                 <!-- Menu Body -->
-                <li class="user-body">
-                  <div class="row">
-                    <div class="col-xs-4 text-center">
-                      <a href="#">Followers</a>
-                    </div>
-                    <div class="col-xs-4 text-center">
-                      <a href="#">Sales</a>
-                    </div>
-                    <div class="col-xs-4 text-center">
-                      <a href="#">Friends</a>
-                    </div>
-                  </div>
-                  <!-- /.row -->
-                </li>
+               
                 <!-- Menu Footer-->
                 <li class="user-footer">
                   <div class="pull-left">
-                    <a href="#" class="btn btn-default btn-flat">Mis datos</a>
+                    <a type="button" class="btn btn-default btn-flat" data-toggle="modal" data-target="#modal-user">Mis datos</a>
                   </div>
                   <div class="pull-right">
 
@@ -235,3 +222,32 @@
       <!-- /.container-fluid -->
     </nav>
   </header>
+
+  
+  @extends('layouts.modal-user')
+
+  @section('title-modal-user')
+    Datos de usuario
+  @endsection
+
+  @section('content-modal-user')
+  <form role="form">
+    <div class="box-body">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Nombre</label>
+        <input type="text" class="form-control" id="InputEmail1" value="{{$user->name}}" readonly>
+      </div>
+      <div class="form-group">
+        <label for="exampleInputEmail1">Email</label>
+        <input type="email" class="form-control" id="Inputpassword" value="{{$user->email}}" readonly>
+      </div>
+      <div class="form-group">
+        <label for="exampleInputEmail1">Contraseña</label>
+        <input type="password" class="form-control" id="Inputpassword" value="{{$user->password}}" readonly>
+      </div>
+    </div>
+    <!-- /.box-body -->
+
+  </form>
+
+  @endsection

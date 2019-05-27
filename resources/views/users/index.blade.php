@@ -54,27 +54,21 @@
                             <th>Estado</th>
                             </tr>
                             </thead>
-                            <tbody>
+                            <thead>                         
+                            @foreach ($docs->sortByDesc('created_at')->slice(0,3) as $docs2)
                             <tr>
-                            <td>25/07/2019</td>
-                            <td>iPhone 6 Plus</td>
-                            <td><span class="label label-danger">Sin Verificar</span></td>
-                            </tr>
-                            <tr>
-                            <td>26/07/2019</td>
-                            <td>Samsung Smart</td>
-                            <td><span class="label label-danger">Sin verificar</span></td>
+                            <th>{{ date("d / m / Y", strtotime($docs2->created_at)) }}</th>
+                            <td><a href="{{ Storage::url($docs2->path) }}">{{$docs2->name}}</a></td>
                             <td>
-                                <div class="sparkbar" data-color="#00c0ef" data-height="20"><canvas width="34" height="20" style="display: inline-block; width: 34px; height: 20px; vertical-align: top;"></canvas></div>
-                            </td>
+                                @if ($docs2->verified == 0)
+                                <span class="label label-danger">Sin verificar</span>
+                                @else
+                                <span class="label label-success">Verificado</span>    
+                                @endif
+                            </td> 
                             </tr>
-
-                            <tr>
-                            <td>27/07/2019</td>
-                            <td>Call of Duty IV</td>
-                            <td><span class="label label-success">Verificado</span></td>
-                            </tr>
-                            </tbody>
+                            @endforeach
+                        </thead>
                         </table>
                         </div>
                         <!-- /.table-responsive -->
@@ -84,7 +78,9 @@
                         <button type="button" class="btn btn-sm btn-info btn-flat pull-left" data-toggle="modal" data-target="#modal-default">
                                 Nuevo Archivo
                         </button>
-                        <a href="javascript:void(0)" class="btn btn-sm btn-default btn-flat pull-right">Ver Todos</a>
+                        <button type="button" class="btn btn-sm btn-default btn-flat pull-right" data-toggle="modal" data-target="#alldocuments">
+                            Ver Todos
+                    </button>
                     </div>
                     <!-- /.box-footer -->
                 </div>
@@ -149,7 +145,7 @@
                         </div>
                         <div class="col-md-5 text-center" id="image" style="padding-top:50px;">
                                 <img class="profile-user-img img-responsive img-circle" src="../../dist/img/user2-160x160.jpg" alt="User profile picture">
-                                <h3 class="profile-username ">Soporte Creamerito <br><small class="label label-warning" style="font-size:12px">Programador</small></h3>
+                                <h3 class="profile-username ">{{$user->name}} {{$user->surname}} <br><small class="label label-warning" style="font-size:12px">Programador</small></h3>
                         </div>
                         </div>
                     </div>
@@ -227,7 +223,7 @@
         <div class="box-body">
             <div class="form-group">
             <label for="exampleInputFile">Archivo</label>
-            <input type="file" id="exampleInputFile" name="name">
+            <input type="file" id="exampleInputFile" name="path">
 
             <p class="help-block">Los archivos subidos serán verificados por el administrador.</p>
             </div>
@@ -237,4 +233,6 @@
 
   @endsection
 
+
 @include('layouts.footer')
+@include('layouts.alldocuments')

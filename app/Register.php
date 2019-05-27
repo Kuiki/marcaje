@@ -11,6 +11,10 @@ class Register extends Model
         'id', 'device', 'entryDate', 'entryNote', 'incidence_entry_id', 'departureDate', 'departureNote','incidence_departure_id', 'ip', 'user_id'
     ];
 
+    public function user()
+    {
+      return $this->belongsTo(User::class,'user_id');
+    }
 
     public function incidence_entry()
     {

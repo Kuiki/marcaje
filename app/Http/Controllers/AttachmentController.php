@@ -36,13 +36,14 @@ class AttachmentController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'name' => 'required',
+            'path' => 'required',
         ]);
         // Compribamos si hay imagen
         $data['user_id'] = auth()->id();
         //dd(auth()->id());
-   		if ($request->hasFile('name')) {
-            $data['name'] = $request->file('name')->store('public/attachment');
+   		if ($request->hasFile('path')) {
+            $data['path'] = $request->file('path')->store('public/attachment');
+            $data['name'] = $request->file('path')->getClientOriginalName();
         }
 
         $attachment = Attachment::create($data);

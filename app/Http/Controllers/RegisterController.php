@@ -6,6 +6,9 @@ use App\Register;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Incidence;
+use App\User;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class RegisterController extends Controller
 {
@@ -19,10 +22,19 @@ class RegisterController extends Controller
         //Listamos todos los registros de ese usuario
         $data = Register::where('user_id', 1)->get();
         $incidents = Incidence::where('active', 1)->get();
-
+        $user = User::find(auth()->id());
         $lastRegister = Register::orderBy('id', 'desc')->first();
+        
+        $hoy = getdate();
+        $date1=$hoy['mday']."-".$hoy['mon']."-".$hoy['year'];
+        $date= date ("d-m-Y", strtotime($date1));
+        if(isset($lastRegister)){
+        $dater= date ("d-m-Y", strtotime($lastRegister->entryDate));
+        }
 
         if (is_null($lastRegister)) {
+            $url = 0;
+        }elseif(($date>$dater) && isset(($lastRegister))){
             $url = 0;
         }
         elseif(is_null($lastRegister->departureDate)){
@@ -31,11 +43,14 @@ class RegisterController extends Controller
             $url = 0;
         }
 
+        $docs = DB::table('attachments')->get();
         //dd($data);
         return view("users.index")->with([
             'data' => $data,
             'incidents' => $incidents,
             'url' => $url,
+            'user' => $user,
+            'docs' => $docs
         ]);
     }
 
